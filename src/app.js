@@ -1,12 +1,24 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
-const connectDB = require("./config/db");
 const createError = require("http-errors");
+const rateLimit = require("express-rate-limit");
 
+const rateLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 5,
+  message: "Too many request from this IP. Please try again later",
+});
+
+app.use(rateLimiter);
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.get("/test", (req, res) => {
+  console.log("App is running successfully");
+  res.status(200).json({ msg: "App is runnnig successfully" });
+});
 
 //client error
 app.use((req, res, next) => {
@@ -20,11 +32,6 @@ app.use((err, req, res, next) => {
     success: false,
     messge: err.message,
   });
-});
-
-app.get("/test", (req, res) => {
-  console.log("App is running successfully");
-  res.send({ msg: "App is runnnig successfully" });
 });
 
 module.exports = app;
