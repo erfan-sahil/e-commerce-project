@@ -3,6 +3,7 @@ const app = express();
 const morgan = require("morgan");
 const createError = require("http-errors");
 const rateLimit = require("express-rate-limit");
+const { userRouter } = require("./routes/user.router");
 
 const rateLimiter = rateLimit({
   windowMs: 1 * 60 * 1000,
@@ -19,6 +20,9 @@ app.get("/test", (req, res) => {
   console.log("App is running successfully");
   res.status(200).json({ msg: "App is runnnig successfully" });
 });
+
+//user router
+app.use("/api/v1/user", userRouter);
 
 //client error
 app.use((req, res, next) => {
