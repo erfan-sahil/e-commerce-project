@@ -5,6 +5,7 @@ Packages that are installed in this application
 3. Mongoose
 4. Dotenv
 5. htt-errors
+6. bcrypt
 
    Packages for only development
 
