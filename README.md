@@ -4,6 +4,7 @@ Packages that are installed in this application
 2. MongoDB
 3. Mongoose
 4. Dotenv
+5. htt-errors
 
    Packages for only development
 
