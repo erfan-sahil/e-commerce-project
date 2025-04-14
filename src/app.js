@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const createError = require("http-errors");
 const rateLimit = require("express-rate-limit");
 const { userRouter } = require("./routes/user.router");
+const { seedRouter } = require("./routes/seed.router");
 
 const rateLimiter = rateLimit({
   windowMs: 1 * 60 * 1000,
@@ -23,6 +24,9 @@ app.get("/test", (req, res) => {
 
 //user router
 app.use("/api/v1/user", userRouter);
+
+//seed router
+app.use("/api/v1/seed", seedRouter);
 
 //client error
 app.use((req, res, next) => {

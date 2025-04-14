@@ -4,7 +4,7 @@ const { mongoURL } = require("../secret");
 
 const connectDB = async (options = {}) => {
   try {
-    await mongoose.connect(mongoURL, options);
+    await mongoose.connect(mongoURL);
     console.log("MongoDB connected successfully");
 
     mongoose.connection.on("error", (error) => {

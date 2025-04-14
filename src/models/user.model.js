@@ -28,7 +28,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "User password is required"],
       minLength: [3, "User name length can be minimum 3 character"],
-      maxLength: [31, "User name length can be maximum 31 character"],
       set: (v) => bcrypt.hashSync(v, bcrypt.genSaltSync(10)),
     },
     image: {
@@ -55,7 +54,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const userModel = mongoose.model(userSchema);
+const userModel = mongoose.model("users", userSchema);
 
 module.exports = {
   userModel,
