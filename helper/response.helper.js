@@ -15,7 +15,7 @@ const successResponse = (
   return res.status(statusCode).json({
     success: true,
     message: message,
-    payload: payload,
+    data: payload,
   });
 };
 

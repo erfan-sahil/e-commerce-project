@@ -1,5 +1,7 @@
 const createError = require("http-errors");
 const { userModel } = require("../models/user.model");
+const { successResponse } = require("../../helper/response.helper");
+const { mongoose } = require("mongoose");
 
 const getUsers = async (req, res, next) => {
   try {
@@ -29,22 +31,19 @@ const getUsers = async (req, res, next) => {
     const count = await userModel.find(searchFilter).countDocuments();
 
     if (!users) {
-      throw createError(404, "No users found");
+      return next(createError(404, "No user found"));
     }
-    if (!users) {
-      console.log("Could not find any user");
-      res.status(400).json({
-        message: "Could not find any user",
-      });
-    }
-    res.status(200).json({
+    return successResponse(res, {
+      statusCode: 200,
       message: "Fetched all the users",
-      payload: users,
-      pagination: {
-        totalPages: Math.ceil(count / limit),
-        currentPage: page,
-        previousPage: page - 1 > 0 ? page - 1 : null,
-        nextPage: page + 1 <= Math.ceil(count / limit) ? page + 1 : null,
+      payload: {
+        users,
+        pagination: {
+          totalPages: Math.ceil(count / limit),
+          currentPage: page,
+          previousPage: page - 1 > 0 ? page - 1 : null,
+          nextPage: page + 1 <= Math.ceil(count / limit) ? page + 1 : null,
+        },
       },
     });
   } catch (error) {
@@ -52,6 +51,34 @@ const getUsers = async (req, res, next) => {
   }
 };
 
+const getSingleUser = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+
+    const options = {
+      password: 0,
+    };
+    const user = await userModel.findById(userId, options);
+
+    if (!user) {
+      return next(createError(404, "User does not exist"));
+    }
+    return successResponse(res, {
+      statusCode: 200,
+      message: "User found successfully",
+      payload: {
+        user,
+      },
+    });
+  } catch (error) {
+    if (error instanceof mongoose.Error.CastError) {
+      return next(createError(400, "Invalid user ID"));
+    }
+    next(error);
+  }
+};
+
 module.exports = {
   getUsers,
+  getSingleUser,
 };

@@ -9,15 +9,17 @@ const { errorResponse } = require("../helper/response.helper");
 
 const rateLimiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 5,
+  max: 10,
   message: "Too many request from this IP. Please try again later",
 });
 
+//middleware
 app.use(rateLimiter);
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//testing
 app.get("/test", (req, res) => {
   console.log("App is running successfully");
   res.status(200).json({ msg: "App is runnnig successfully" });
@@ -31,8 +33,7 @@ app.use("/api/v1/seed", seedRouter);
 
 //client error
 app.use((req, res, next) => {
-  createError(404, "Route not found");
-  next();
+  next(createError(400, "Route not found"));
 });
 
 //server error
