@@ -22,3 +22,4 @@ Packages that are installed in this application
 Topic for revise
 
 1. Pagination,Search
+2. fs delete image
