@@ -19,8 +19,6 @@ Packages that are installed in this application
 
 ---
 
-Folder Structure
+Topic for revise
 
-src
-
-1. Index.js
+1. Pagination,Search
