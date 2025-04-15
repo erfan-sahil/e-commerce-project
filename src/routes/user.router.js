@@ -3,8 +3,11 @@ const {
   getUsers,
   getSingleUser,
   deleteUser,
+  userRegister,
 } = require("../controllers/user.controller");
 const userRouter = express.Router();
+
+userRouter.post("/register", userRegister);
 
 userRouter.get("/", getUsers);
 

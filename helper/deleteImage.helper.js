@@ -1,5 +1,5 @@
 const fs = require("fs").promises;
-const createError = require("http-errors");
+
 const deleteImage = async (userImagePath, next) => {
   try {
     await fs.access(userImagePath);

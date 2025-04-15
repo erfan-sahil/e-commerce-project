@@ -1,6 +1,14 @@
 const data = {
   fakeUsers: [
     {
+      name: "Erfan Sahil",
+      email: "erfansahil47@gmail.com",
+      password: "sahil1111",
+      address: "Kaliajury, Comilla",
+      phone: "1234567890",
+      isAdmin: true,
+    },
+    {
       name: "John Doe",
       email: "john@example.com",
       password: "john1234",
@@ -13,7 +21,6 @@ const data = {
       password: "jane1234",
       address: "456 Elm St, California",
       phone: "0987654321",
-      isAdmin: true,
     },
     {
       name: "Ali Khan",
