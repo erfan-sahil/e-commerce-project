@@ -6,6 +6,8 @@ const { findItem } = require("../../helper/findItem.helper");
 const { options } = require("../app");
 const fs = require("fs");
 const { deleteImage } = require("../../helper/deleteImage.helper");
+const { createJsonWebToken } = require("../../helper/jsonWebToken.helper");
+const { jwtActivisionKey } = require("../secret");
 
 const getUsers = async (req, res, next) => {
   try {
@@ -124,10 +126,19 @@ const userRegister = async (req, res, next) => {
       );
     }
 
+    console.log("name", name, "email", email);
+    //createToken
+    const token = createJsonWebToken(
+      { name, email, phone, address },
+      jwtActivisionKey,
+      "10m",
+      next
+    );
+
     return successResponse(res, {
       statusCode: 200,
       message: "New user created successfully",
-      payload: { newUser },
+      payload: { token },
     });
   } catch (error) {
     next(error);

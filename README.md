@@ -1,16 +1,17 @@
 Packages that are installed in this application
 
-1. Express
-2. MongoDB
-3. Mongoose
-4. Dotenv
+1. express
+2. mongoDB
+3. mongoose
+4. dotenv
 5. htt-errors
 6. bcrypt
+7. jsonwebtoken
 
    Packages for only development
 
-   1. Morgan
-   2. Nodemon
+   1. morgan
+   2. nodemon
 
    Packages for secure API
 
