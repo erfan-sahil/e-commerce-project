@@ -4,10 +4,13 @@ const {
   getSingleUser,
   deleteUser,
   userRegister,
+  activateUser,
 } = require("../controllers/user.controller");
 const userRouter = express.Router();
 
 userRouter.post("/register", userRegister);
+
+userRouter.post("/verify", activateUser);
 
 userRouter.get("/", getUsers);
 

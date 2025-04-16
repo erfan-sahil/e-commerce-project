@@ -8,6 +8,8 @@ const fs = require("fs");
 const { deleteImage } = require("../../helper/deleteImage.helper");
 const { createJsonWebToken } = require("../../helper/jsonWebToken.helper");
 const { jwtActivisionKey } = require("../secret");
+const { emailWithNodeMailer } = require("../../helper/email");
+const jwt = require("jsonwebtoken");
 
 const getUsers = async (req, res, next) => {
   try {
@@ -146,13 +148,58 @@ const userRegister = async (req, res, next) => {
     };
 
     //send email with nodemailer
+    try {
+      await emailWithNodeMailer(emailData);
+    } catch (error) {
+      return next(
+        createError(400, "Verification email failed. Please try again")
+      );
+    }
+
     return successResponse(res, {
       statusCode: 200,
-      message: "New user created successfully",
+      message: "Verification email send. Please check your email",
       payload: { token },
     });
   } catch (error) {
     next(error);
+  }
+};
+const activateUser = async (req, res, next) => {
+  try {
+    const { token } = req.body;
+    if (!token) {
+      next(createError(404, "Token not found"));
+    }
+    const decoded = jwt.verify(token, jwtActivisionKey);
+
+    if (!decoded) {
+      return next(createError(401, "Verfication failed"));
+    }
+
+    console.log("decoded", decoded);
+    const userExists = await userModel.exists({ email });
+
+    if (userExists) {
+      next(
+        createError(409, "User with this email already exists. Please login")
+      );
+    }
+
+    const newUser = await userModel.create(decoded);
+
+    return successResponse(res, {
+      statusCode: 200,
+      message: "User created successfully",
+      payload: { newUser },
+    });
+  } catch (error) {
+    if (error.name == "TokenExpiredError") {
+      return next(createError(401, "Token has expired"));
+    } else if (error.name == "JsonWebTokenError") {
+      return next(createError(401, "Invalid Token"));
+    }
+    return next(error);
   }
 };
 module.exports = {
@@ -160,4 +207,5 @@ module.exports = {
   getSingleUser,
   deleteUser,
   userRegister,
+  activateUser,
 };
