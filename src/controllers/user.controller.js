@@ -135,6 +135,17 @@ const userRegister = async (req, res, next) => {
       next
     );
 
+    //prepare email
+    const emailData = {
+      email: email,
+      subject: "Account Activision Mail",
+      html: `
+      <h2> Hello, ${name} </h2>
+      <p> Please click here to <a style="color-red" href="http://localhost:4500/api/v1/user/verify/${token}"> Activate your account </a> </p>
+      `,
+    };
+
+    //send email with nodemailer
     return successResponse(res, {
       statusCode: 200,
       message: "New user created successfully",

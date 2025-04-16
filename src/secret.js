@@ -11,9 +11,14 @@ const jwtActivisionKey =
   process.env.JWT_ACTIVISION_KEY ||
   "dgsdgsdgsdt3534teryrhtu686iuytkjmgffdefe32";
 
+const smtpUserName = process.env.SMTP_USERNAME || "";
+const smtpPassword = process.env.SMTP_PASSWORD || "";
+
 module.exports = {
   port,
   mongoURL,
   defaultUserImage,
   jwtActivisionKey,
+  smtpUserName,
+  smtpPassword,
 };
