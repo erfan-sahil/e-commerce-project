@@ -118,7 +118,7 @@ const deleteUser = async (req, res, next) => {
 
 const userRegister = async (req, res, next) => {
   try {
-    const { name, email, phone, address } = req.body;
+    const { name, email, phone, address, password } = req.body;
 
     const userExists = await userModel.exists({ email });
 
@@ -131,7 +131,7 @@ const userRegister = async (req, res, next) => {
     console.log("name", name, "email", email);
     //createToken
     const token = createJsonWebToken(
-      { name, email, phone, address },
+      { name, email, phone, address, password },
       jwtActivisionKey,
       "10m",
       next
@@ -169,7 +169,7 @@ const activateUser = async (req, res, next) => {
   try {
     const { token } = req.body;
     if (!token) {
-      next(createError(404, "Token not found"));
+      return next(createError(404, "Token not found"));
     }
     const decoded = jwt.verify(token, jwtActivisionKey);
 
@@ -178,15 +178,19 @@ const activateUser = async (req, res, next) => {
     }
 
     console.log("decoded", decoded);
-    const userExists = await userModel.exists({ email });
+    const userExists = await userModel.exists({ email: decoded.email });
 
     if (userExists) {
-      next(
+      return next(
         createError(409, "User with this email already exists. Please login")
       );
     }
 
     const newUser = await userModel.create(decoded);
+
+    if (!newUser) {
+      return next(createError(400, "Can't create user on the database"));
+    }
 
     return successResponse(res, {
       statusCode: 200,

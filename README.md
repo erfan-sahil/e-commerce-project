@@ -7,6 +7,7 @@ Packages that are installed in this application
 5. htt-errors
 6. bcrypt
 7. jsonwebtoken
+8. multer
 
    Packages for only development
 
