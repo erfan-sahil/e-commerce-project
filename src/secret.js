@@ -14,12 +14,6 @@ const jwtActivisionKey =
 const smtpUserName = process.env.SMTP_USERNAME || "";
 const smtpPassword = process.env.SMTP_PASSWORD || "";
 
-const uploadDir = process.env.UPLOAD_DIR || "public/image/users";
-
-const maxFileSize = process.env.MAX_FILE_SIZE || 2 * 1024 * 1024;
-
-const allowedFileTypes = process.env.ALLOWED_FILE_TYPES || [jpg, png, jpeg];
-
 module.exports = {
   port,
   mongoURL,
@@ -27,7 +21,4 @@ module.exports = {
   jwtActivisionKey,
   smtpUserName,
   smtpPassword,
-  uploadDir,
-  maxFileSize,
-  allowedFileTypes,
 };
