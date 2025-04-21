@@ -149,7 +149,7 @@ const userRegister = async (req, res, next) => {
 
     //send email with nodemailer
     try {
-      await emailWithNodeMailer(emailData);
+      // await emailWithNodeMailer(emailData);
     } catch (error) {
       return next(
         createError(400, "Verification email failed. Please try again")

@@ -6,9 +6,10 @@ const {
   userRegister,
   activateUser,
 } = require("../controllers/user.controller");
+const { upload } = require("../middlewares/uploadFiles");
 const userRouter = express.Router();
 
-userRouter.post("/register", userRegister);
+userRouter.post("/register", upload.single("image"), userRegister);
 
 userRouter.post("/verify", activateUser);
 
